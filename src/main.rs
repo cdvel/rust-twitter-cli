@@ -1,5 +1,6 @@
 extern crate config;
 extern crate twitter_stream;
+extern crate json;
 
 use std::collections::HashMap;
 use twitter_stream::{Token, TwitterStreamBuilder};
@@ -22,8 +23,13 @@ fn main() {
         .listen()
     .unwrap()
         .flatten_stream()
-        .for_each(|json| {
-            println!("{}", json);
+        .for_each(|tweet| {
+            let payload = json::parse(&tweet).unwrap();
+            println!("\n🐦 {}\n", payload["text"]);
+            println!("@{} | {} | {}\n", 
+                        payload["user"]["screen_name"], 
+                        payload["created_at"], 
+                        payload["user"]["location"]);
             Ok(())
         })
         .map_err(|e| println!("{}", e));

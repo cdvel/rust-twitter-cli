@@ -9,3 +9,4 @@ edition = "2018"
 [dependencies]
 twitter-stream = "0.9"
 config = "0.10.1"
+json = "0.12.4"
